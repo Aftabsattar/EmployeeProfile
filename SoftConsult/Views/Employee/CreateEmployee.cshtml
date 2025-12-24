@@ -1,0 +1,277 @@
+﻿@model EmployeeViewModel;
+<h4 class="erp-section-title">EMPLOYEE PROFILE</h4>
+@if (TempData != null && TempData.ContainsKey("Success"))
+{
+    <div class="alert alert-success">
+        <h5> @TempData["Success"]</h5>
+    </div>
+}
+<form method="post" asp-action="Create">
+    <div class="container-fluid">
+
+        <div class="row erp-row align-items-center">
+                <label class="col-2 erp-label">Office/Location:</label>
+                <div class="col-4">
+                <input type="text" asp-for="OfficeLocation" class="form-control erp-input" />
+                <span asp-validation-for="OfficeLocation" class="text-danger"></span>
+                </div>
+            <label class="col-2 erp-label">Sur Name:</label>
+            <div class="col-4">
+                <select asp-for="SurnameId"
+                        class="form-select erp-input"
+                        asp-items="@(new SelectList(Model.SurNameList, "Id", "Title"))">
+                       <option value="">Select</option>
+                </select>
+                <span asp-validation-for="SurnameId" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row erp-row align-items-center">
+            <label class="col-2 erp-label">Employee ID:</label>
+            <div class="col-2">
+                <input type="number" asp-for="Id" class="form-control erp-input" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="col-2">
+                <input type="number" asp-for="OPRCode" class="form-control erp-input" placeholder="OPR" />
+                <span asp-validation-for="OPRCode" class="text-danger"></span>
+            </div>
+
+            <label class="col-2 erp-label">Father/Hus. Name:</label>
+            <div class="col-4">
+                <input type="text" asp-for="FatherName" class="form-control erp-input" />
+                <span asp-validation-for="FatherName" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row erp-row align-items-center">
+            <label class="col-2 erp-label">Full Name:</label>
+            <div class="col-4">
+                <input type="text" asp-for="FullName" class="form-control erp-input" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+            <label class="col-2 erp-label">Photo:</label>
+            <div class="col-4">
+                <input type="text"  asp-for="ProfilePictureUrl" type="file" class="form-control erp-input" />
+                <span asp-validation-for="ProfilePictureUrl" class="text-danger"></span>
+            </div>
+        </div>
+
+        <hr />
+        <h4>NATIONALITY & IDS</h4>
+        <div class="row erp-row align-items-center">
+            <label class="col-2 erp-label">Nationality:</label>
+            <div class="col-4">
+                <select asp-for="NationalityId" 
+                        class="form-select erp-input"
+                        asp-items="@(new SelectList(Model.NationalityList, "Id", "Name"))">
+                    <option value="0">Select</option>
+                </select>
+                <span asp-validation-for="NationalityId" class="text-danger"></span>
+            </div>
+
+            <label class="col-2 erp-label">Date of Birth:</label>
+            <div class="col-4">
+                <input type="date"  asp-for="DateOfBirth" type="date" class="form-control erp-input" />
+            </div>
+        </div>
+
+        <div class="row erp-row align-items-center">
+            <label class="col-2 erp-label">CNIC:</label>
+            <div class="col-4">
+                <input type="number" asp-for="CNIC" class="form-control erp-input" />
+                <span asp-validation-for="CNIC" class="text-danger"></span>
+            </div>
+            <label class="col-2 erp-label">ID Expiry Date:</label>
+            <div class="col-4">
+                <input asp-for="IDExpiryDate" type="date" class="form-control erp-input" />
+            </div>
+        </div>
+
+        <hr />
+            <h4>BASIC INFORMATION</h4>
+
+        <div class="row erp-row align-items-center">
+                <label class="col-2 erp-label">Section:</label>
+                <div class="col-4">
+                    <select asp-for="SectionId"
+                            class="form-select erp-input"
+                            asp-items="@(new SelectList(Model.SectionList, "Id","Name"))">
+                    <option value="0">Select</option>
+                </select>
+                <span asp-validation-for="SectionId" class="text-danger"></span>
+                </div>
+
+            <label class="col-2 erp-label">Department:</label>
+            <div class="col-4">
+                <select asp-for="DepartmentId"
+                        class="form-select erp-input"
+                        asp-items="@(new SelectList(Model.DepartmentList, "Id","Name"))">
+                    <option value="0">Select</option>
+                </select>
+                <span asp-validation-for="DepartmentId" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row erp-row align-items-center">
+            <label class="col-2 erp-label">Dept Level:</label>
+            <div class="col-4">
+                <select asp-for="DepartmentLevelId"
+                        class="form-select erp-input"
+                        asp-items="@(new SelectList(Model.DepartmentLevelList, "Id", "LevelName"))">
+                    <option value="0">Select</option>
+                </select>
+                <span asp-validation-for="DepartmentLevelId" class="text-danger"></span>
+            </div>
+
+            <label class="col-2 erp-label">Leave Policy:</label>
+            <div class="col-4">
+                <select asp-for="LeavePolicyCodeId"
+                        class="form-select erp-input"
+                        asp-items="@(new SelectList(Model.LevelPolicyList, "Id", "Level"))">
+                    <option value="0">Select</option>
+                </select>
+                <span asp-validation-for="LeavePolicyCodeId" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row erp-row align-items-center">
+            <label class="col-2 erp-label">Gender:</label>
+            <div class="col-4">
+                <select asp-for="GenderId"
+                        class="form-select erp-input"
+                        asp-items="@(new SelectList(Model.GenderList,"Id","Name"))">
+                    <option value="0">Select</option>
+                </select>
+                <span asp-validation-for="GenderId" class="text-danger"></span>
+            </div>
+
+            <label class="col-2 erp-label">Marital Status:</label>
+            <div class="col-4">
+                <select asp-for="MaritalStatusId"
+                        class="form-select erp-input"
+                        asp-items="@(new SelectList(Model.MaritalStatusList,"Id","Status"))">
+                    <option value="0">Select</option>
+                </select>
+                <span asp-validation-for="MaritalStatusId" class="text-danger"></span>
+            </div>
+
+            <label class="col-2 erp-label">Designation:</label>
+            <div class="col-4 mt-2">
+                <select asp-for="DesignationId"
+                        class="form-select erp-input"
+                        asp-items="@(new SelectList(Model.DesignationsList, "Id", "DesignationName"))">
+                    <option value="0">Select</option>
+                </select>
+                <span asp-validation-for="DesignationId" class="text-danger"></span>
+           </div>
+        </div>
+
+        <div class="row erp-row align-items-center">
+            <label class="col-2 erp-label">Blood Group:</label>
+            <div class="col-4">
+                <select asp-for="BloodGroupId"
+                        class="form-select erp-input"
+                        asp-items="@(new SelectList(Model.BloodGroupList, "Id","Group"))">
+                    <option value="0">Select</option>
+                </select>
+                <span asp-validation-for="BloodGroupId" class="text-danger"></span>
+            </div>
+
+            <label class="col-2 erp-label">Religion:</label>
+            <div class="col-4">
+                <select asp-for="ReligionId"
+                        class="form-select erp-input"
+                        asp-items="@(new SelectList(Model.ReligionList, "Id","Name"))">
+                    <option value="">Select</option>
+                </select>
+                <span asp-validation-for="ReligionId" class="text-danger"></span>
+            </div>
+         </div>
+        </div>
+        <div class="row erp-row ">
+            <div>
+                <label class="col-2 erp-label">HOD</label>
+                <input type="checkbox" asp-for="IsHOD" />
+            </div>
+            <div>
+                <label class="col-2 erp-label">Ass. HOD</label>
+                <input type="checkbox" asp-for="IsAsstHOD" />
+            </div>
+        </div>
+    
+    <hr />
+    <h4>EMPLOYEE STATUS</h4>
+
+    <div class="row erp-row align-items-center">
+        <label class="col-2 erp-label">Joining Date:</label>
+        <div class="col-4">
+            <input asp-for="JoiningDate"
+                   type="date"
+                   class="form-control erp-input" />
+        </div>
+
+        <label class="col-2 erp-label">Grade:</label>
+        <div class="col-4">
+            <select asp-for="GradeId"
+                    class="form-select erp-input"
+                asp-items="@(new SelectList(Model.Grades, "Id","EGrade"))">
+                <option value="">Select</option>
+            </select>
+            <span asp-validation-for="GradeId" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row erp-row align-items-center">
+        <label class="col-2 erp-label">Employment Status:</label>
+        <div class="col-4">
+            <select asp-for="EmploymentStatusId"
+                    class="form-select erp-input"
+                    asp-items="@(new SelectList(Model.EmploymentStatusList, "Id", "Status"))">
+                <option value="">Select</option>
+            </select>
+            <span asp-validation-for="EmploymentStatusId" class="text-danger"></span>
+        </div>
+
+        <label class="col-2 erp-label">Job Status:</label>
+        <div class="col-4">
+            <select asp-for="JobStatusId"
+                    class="form-select erp-input"
+                    asp-items="@(new SelectList(Model.JobStatusList, "Id", "Status"))">
+                <option value="">Select</option>
+                </select>
+            <span asp-validation-for="JobStatusId" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row erp-row align-items-center">
+        <label class="col-2 erp-label">Confirmation Date:</label>
+        <div class="col-4">
+            <input asp-for="ConfirmationDate"
+                   type="date"
+                   class="form-control erp-input" />
+        </div>
+
+        <label class="col-2 erp-label">Date of Leaving:</label>
+        <div class="col-4">
+            <input asp-for="DateOfLeaving"
+                   type="date"
+                   class="form-control erp-input" />
+        </div>
+    </div>
+
+    <div class="row erp-row align-items-start">
+        <label class="col-2 erp-label">Reason:</label>
+        <div class="col-2">
+            <textarea asp-for="Reason"
+                      class="form-control"></textarea>
+            <span asp-validation-for="Reason" class="text-danger"></span>
+        </div>
+    </div>
+    <button asp-controller="Employee" type="submit" asp-action="CreateEmployee" class="btn btn-dark mt-3">Save Employee</button>
+    <a type="reset" asp-controller="Employee" asp-action="CreateEmployee" class="btn btn-outline-dark mt-3">Refresh</a>
+    <a asp-controller="Employee" asp-action="EmployeeList" class="btn btn-outline-dark mt-3">
+        List
+    </a>
+</form>

@@ -1,0 +1,221 @@
+﻿@model PagedViewModel;
+
+<h4 class="erp-section-title">EMPLOYEES</h4>
+
+<form asp-controller="Employee"
+      asp-action="EmployeeList"
+      method="get"
+      class="row g-2 mb-3">
+    <div class="col-md-4">
+        <div class="row align-items-center">
+            <div class="col-4">
+                <label class="form-label mb-0">Religion:</label>
+            </div>
+            <div class="col-8">
+                <select name="religionId" class="form-select">
+                    <option value="">All</option>
+
+                    @if (ViewBag.ReligionList != null)
+                    {
+                        foreach (var r in ViewBag.ReligionList)
+                        {
+                            <option value="@r.Id"
+                                    selected="@(ViewBag.SelectedReligionId == r.Id)">
+                                @r.Name
+                            </option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="row align-items-center">
+            <div class="col-4">
+                <label class="form-label mb-0">Section:</label>
+            </div>
+            <div class="col-8">
+                <select name="SectionId" class="form-select">
+                    <option value="">All</option>
+                    @if (ViewBag.SectionList != null)
+                    {
+                        foreach (var r in ViewBag.SectionList)
+                        {
+                            <option value="@r.Id"
+                                    selected="@(ViewBag.SectionId == r.Id)">
+                                @r.Name
+                            </option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="row align-items-center">
+
+            <div class="col-4">
+                <label class="form-label mb-0">Marital:</label>
+            </div>
+
+            <div class="col-8">
+                <select name="MaritalStatusSelectedId" class="form-select">
+                    <option value="">All</option>
+
+                    @if (ViewBag.MaritalStatusList != null)
+                    {
+                        foreach (var r in ViewBag.MaritalStatusList)
+                        {
+                            <option value="@r.Id"
+                                    selected="@(ViewBag.MaritalStatusSelectedId == r.Id)">
+                                @r.Status
+                            </option>
+                        }
+                    }
+                </select>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="row align-items-center">
+
+            <div class="col-4">
+                <label class="form-label mb-0">Department:</label>
+            </div>
+
+            <div class="col-8">
+                <select name="BloodGroupSelectedId" class="form-select">
+                    <option value="">All</option>
+
+                    @if (ViewBag.DepartmentList != null)
+                    {
+                        foreach (var r in ViewBag.DepartmentList)
+                        {
+                            <option value="@r.Id"
+                                    selected="@(ViewBag.DepartmentSelectedId == r.Id)">
+                                @r.Name
+                            </option>
+                        }
+                    }
+                </select>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="row align-items-center">
+
+            <div class="col-4">
+                <label class="form-label mb-0">jobStatus:</label>
+            </div>
+
+            <div class="col-8">
+                <select name="BloodGroupSelectedId" class="form-select">
+                    <option value="">All</option>
+                    @if (ViewBag.JobStatusList != null)
+                    {
+                        foreach (var r in ViewBag.JobStatusList)
+                        {
+                            <option value="@r.Id"
+                                    selected="@(ViewBag.JobStatusSelectedId== r.Id)">
+                                @r.Status
+                            </option>
+                        }
+                    }
+                </select>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-md-1">
+        <button type="submit" class="btn btn-outline-primary">
+            Search
+        </button>
+    </div>
+</form>
+<div class ="text-end">
+    <h4>Total Records: @Model.TotalRecords</h4>
+    <p>Page @Model.PageNumber of @Model.TotalPages</p>
+
+    <div>
+        @if (Model.PageNumber > 1)
+        {
+            <a href="@Url.Action("EmployeeList", new { pageNumber = Model.PageNumber - 1, pageSize = Model.PageSize })">Previous</a>
+        }
+        @if (Model.PageNumber < Model.TotalPages)
+        {
+            <a href="@Url.Action("EmployeeList", new { pageNumber = Model.PageNumber + 1, pageSize = Model.PageSize })">Next</a>
+        }
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table erp-table">
+        <thead class="erp-table-header">
+            <tr class="erp-row">
+                <th>Emp. ID</th>
+                <th>Employee Name</th>
+                <th>Father / Hus. Name</th>
+                <th>Classification</th>
+                <th>Job Status</th>
+                <th>Others</th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model != null)
+            {
+                foreach (var emp in Model.Employees)
+                {
+                    <tr>
+                        <td>@emp.Id</td>
+                        <td>@emp.FullName</td>
+                        <td>@emp.FatherName</td>
+                        <td class="text-danger">
+                            @emp.OfficeLocation<br />
+                            @emp.EGrade
+                        </td>
+                        <td>
+                            @emp.EmployeementStatus<br />
+                            @emp.JobStatus
+                        </td>
+                        <td>
+                            @emp.Gender<br />
+                            @emp.Religion<br />
+                            @emp.MaritalStatus
+                        </td>
+                        <td class="text-center">
+                            <a asp-controller="Employee"
+                               asp-action="GetEmployee"
+                               asp-route-id="@emp.Id"
+                               class="btn btn-sm btn-outline-primary">
+                                Update
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" class="text-center text-muted">
+                        No employees found.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <a asp-controller="Employee"
+       asp-action="CreateEmployee"
+       class="btn btn-outline-dark mt-3">
+        Back
+    </a>
+</div>

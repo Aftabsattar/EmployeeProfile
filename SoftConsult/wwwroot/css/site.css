@@ -1,0 +1,70 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+.erp-section-title {
+    background: linear-gradient(to right, #2b6aa3, #d9e8f5);
+    color: white;
+    font-weight: bold;
+    padding: 6px 10px;
+    margin: 15px 0;
+}
+
+.erp-label {
+    font-size: 14px;
+    font-weight: 600;
+}
+.erp-row {
+    margin-bottom:8px;
+}
+.erp-input {
+    height: 32px;
+    font-size: 14px;
+}
+.erp-box-input {
+    text-align-last :end;
+}
+.erp-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.erp-table-header {
+    background: #2b6aa3;
+    color: white;
+}
+.erp-section-title {
+    background-color:color(#1c7ed6);
+    padding: 4px 10px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    border-radius:10px
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+}
