@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SoftConsult.Context;
 using SoftConsult.IService;
+using SoftConsult.Models;
 using SoftConsult.ViewModel;
 
 namespace SoftConsult.Controllers;
@@ -9,11 +10,9 @@ namespace SoftConsult.Controllers;
 public class EmployeeController : Controller
 {
     private readonly IEmployeeService _employeeInformation;
-    private readonly AppDbContext _appDbContext;
-    public EmployeeController(AppDbContext appDbContext, IEmployeeService employeeInformation)
+    public EmployeeController(IEmployeeService employeeInformation)
     {
         _employeeInformation = employeeInformation;
-        _appDbContext = appDbContext;
     }
 
     [HttpGet]
@@ -21,20 +20,20 @@ public class EmployeeController : Controller
     {
         var vm = new EmployeeViewModel
         {
-            SurNameList = await _appDbContext.SurName.FromSqlRaw("EXEC dbo.sp_GetSurName").AsNoTracking().ToListAsync(),
-            NationalityList = await _appDbContext.Nationality.FromSqlRaw("EXEC sp_GetNationality").AsNoTracking().ToListAsync(),
-            SectionList = await _appDbContext.Sections.FromSqlRaw("EXEC dbo.sp_GetSection").AsNoTracking().ToListAsync(),
-            DepartmentLevelList = await _appDbContext.DepartmentLevels.FromSqlRaw("Exec dbo.sp_GetDepartmentLevel").AsNoTracking().ToListAsync(),
-            LevelPolicyList = await _appDbContext.LevelPolicie.FromSqlRaw("EXEC dbo.sp_GetLevelPolicy").AsNoTracking().ToListAsync(),
-            ReligionList = await _appDbContext.Religion.FromSqlRaw("EXEC sp_GetReligion").AsNoTracking().ToListAsync(),
-            GenderList = await _appDbContext.Gender.FromSqlRaw("EXEC dbo.sp_GetGender").AsNoTracking().ToListAsync(),
-            MaritalStatusList = await _appDbContext.MaritalStatuses.FromSqlRaw("EXEC sp_GetMaritalStatus").AsNoTracking().ToListAsync(),
-            BloodGroupList = await _appDbContext.BloodGroup.FromSqlRaw("EXEC dbo.sp_GetBloodGroups").AsNoTracking().ToListAsync(),
-            DesignationsList = await _appDbContext.Designation.FromSqlRaw("Exec dbo.sp_GetDesignation").AsNoTracking().ToListAsync(),
-            DepartmentList = await _appDbContext.Departments.FromSqlRaw("EXEC dbo.sp_GetDepartments").AsNoTracking().ToListAsync(),
-            Grades = await _appDbContext.Grade.FromSqlRaw("EXEC dbo.sp_GetGrade").AsNoTracking().ToListAsync(),
-            EmploymentStatusList = await _appDbContext.EmployeeStatus.FromSqlRaw("EXEC dbo.sp_GetEmployeeStatus").AsNoTracking().ToListAsync(),
-            JobStatusList = await _appDbContext.JobStatus.FromSqlRaw("EXEC dbo.sp_GetJobStatus").AsNoTracking().ToListAsync()
+            SurNameList = await _employeeInformation.Fill_Comb(14),
+            NationalityList = await _employeeInformation.Fill_Comb(11),
+            SectionList = await _employeeInformation.Fill_Comb(13),
+            DepartmentLevelList = await _employeeInformation.Fill_Comb(2),
+            LevelPolicyList = await _employeeInformation.Fill_Comb(9),
+            ReligionList = await _employeeInformation.Fill_Comb(12),
+            GenderList = await _employeeInformation.Fill_Comb(6),
+            MaritalStatusList = await _employeeInformation.Fill_Comb(10),
+            BloodGroupList = await _employeeInformation.Fill_Comb(1),
+            DesignationsList = await _employeeInformation.Fill_Comb(4),
+            DepartmentList = await _employeeInformation.Fill_Comb(3),
+            Grades = await _employeeInformation.Fill_Comb(7),
+            EmploymentStatusList = await _employeeInformation.Fill_Comb(5),
+            JobStatusList = await _employeeInformation.Fill_Comb(8)
         };
         return View(vm);
     }
@@ -44,79 +43,91 @@ public class EmployeeController : Controller
     {
         if (!ModelState.IsValid)
         {
-            model.SurNameList = await _appDbContext.SurName.FromSqlRaw("EXEC dbo.sp_GetSurName").AsNoTracking().ToListAsync();
-            model.NationalityList = await _appDbContext.Nationality.FromSqlRaw("EXEC sp_GetNationality").AsNoTracking().ToListAsync();
-            model.SectionList = await _appDbContext.Sections.FromSqlRaw("EXEC dbo.sp_GetSection").AsNoTracking().ToListAsync();
-            model.DepartmentLevelList = await _appDbContext.DepartmentLevels.FromSqlRaw("Exec dbo.sp_GetDepartmentLevel").AsNoTracking().ToListAsync();
-            model.LevelPolicyList = await _appDbContext.LevelPolicie.FromSqlRaw("EXEC dbo.sp_GetLevelPolicy").AsNoTracking().ToListAsync();
-            model.ReligionList = await _appDbContext.Religion.FromSqlRaw("EXEC sp_GetReligion").AsNoTracking().ToListAsync();
-            model.GenderList = await _appDbContext.Gender.FromSqlRaw("EXEC dbo.sp_GetGender").AsNoTracking().ToListAsync();
-            model.MaritalStatusList = await _appDbContext.MaritalStatuses.FromSqlRaw("EXEC sp_GetMaritalStatus").AsNoTracking().ToListAsync();
-            model.BloodGroupList = await _appDbContext.BloodGroup.FromSqlRaw("EXEC dbo.sp_GetBloodGroups").AsNoTracking().ToListAsync();
-            model.DesignationsList = await _appDbContext.Designation.FromSqlRaw("Exec dbo.sp_GetDesignation").AsNoTracking().ToListAsync();
-            model.DepartmentList = await _appDbContext.Departments.FromSqlRaw("EXEC dbo.sp_GetDepartments").AsNoTracking().ToListAsync();
-            model.Grades = await _appDbContext.Grade.FromSqlRaw("EXEC dbo.sp_GetGrade").AsNoTracking().ToListAsync();
-            model.EmploymentStatusList = await _appDbContext.EmployeeStatus.FromSqlRaw("EXEC dbo.sp_GetEmployeeStatus").AsNoTracking().ToListAsync();
-            model.JobStatusList = await _appDbContext.JobStatus.FromSqlRaw("EXEC dbo.sp_GetJobStatus").AsNoTracking().ToListAsync();
-            return View(model);
-
-        }
-
-        var res = await _employeeInformation.GetById(model.Id);
-
-            if (res != null && res.Id == model.Id)
-            {
-                res.Id = model.Id;
-                res.EmployeeCode = model.EmployeeCode;
-                res.FullName = model.FullName;
-                res.FatherName = model.FatherName;
-                res.ProfilePictureUrl = model.ProfilePictureUrl;
-                res.OPRCode = model.OPRCode;
-                res.DateOfBirth = model.DateOfBirth;
-                res.DateOfLeaving = model.DateOfLeaving;
-                res.ConfirmationDate = model.ConfirmationDate;
-                res.IDExpiryDate = model.IDExpiryDate;
-                res.JoiningDate = model.JoiningDate;
-                res.CNIC = model.CNIC;
-                res.Reason = model.Reason;
-                res.IsAsstHOD = model.IsAsstHOD;
-                res.IsHOD = model.IsHOD;
-                var result = await _employeeInformation.UpdateEmployeeAsync(res);
-            }
-            else
-            {
-                await _employeeInformation.CreateEmployee(model);
-                TempData["Success"] = "Employee added successfully";
+            model.SurNameList = await _employeeInformation.Fill_Comb(14);
+            model.NationalityList = await _employeeInformation.Fill_Comb(11);
+            model.SectionList = await _employeeInformation.Fill_Comb(13);
+            model.DepartmentLevelList = await _employeeInformation.Fill_Comb(2);
+            model.LevelPolicyList = await _employeeInformation.Fill_Comb(9);
+            model.ReligionList = await _employeeInformation.Fill_Comb(12);
+            model.GenderList = await _employeeInformation.Fill_Comb(6);
+            model.MaritalStatusList = await _employeeInformation.Fill_Comb(10);
+            model.BloodGroupList = await _employeeInformation.Fill_Comb(1);
+            model.DesignationsList = await _employeeInformation.Fill_Comb(4);
+            model.DepartmentList = await _employeeInformation.Fill_Comb(3);
+            model.Grades = await _employeeInformation.Fill_Comb(7);
+            model.EmploymentStatusList = await _employeeInformation.Fill_Comb(5);
+            model.JobStatusList = await _employeeInformation.Fill_Comb(8);
             return View(model);
         }
-        TempData["Success"] = "Employee Updated successfully";
-        return View(model);
+
+        var result = await _employeeInformation.GetById(model.Id);
+
+        if (result != null && result.Id == model.Id)
+        {
+            // Update existing
+            result.Id = model.Id;
+            result.EmployeeCode = model.EmployeeCode;
+            result.FullName = model.FullName;
+            result.FatherName = model.FatherName;
+            result.ProfilePictureUrl = model.ProfilePictureUrl;
+            result.OPRCode = model.OPRCode;
+            result.DateOfBirth = model.DateOfBirth;
+            result.DateOfLeaving = model.DateOfLeaving;
+            result.ConfirmationDate = model.ConfirmationDate;
+            result.IDExpiryDate = model.IDExpiryDate;
+            result.JoiningDate = model.JoiningDate;
+            result.CNIC = model.CNIC;
+            result.Reason = model.Reason;
+            result.IsAsstHOD = model.IsAsstHOD;
+            result.IsHOD = model.IsHOD;
+            var updateResult = await _employeeInformation.UpdateEmployeeAsync(result);
+
+            TempData["Success"] = "Employee updated successfully";
+            // PRG to avoid returning view with missing lists
+            return RedirectToAction("EmployeeList");
+        }
+        else
+        {
+            // Create new
+            var createResult = await _employeeInformation.CreateEmployee(model);
+            TempData["Success"] = "Employee added successfully";
+            return RedirectToAction("EmployeeList");
+        }
     }
 
     [HttpGet]
     public async Task<IActionResult> EmployeeList(
-        string? officeLocation,  
-        int? MaritalStatusId, 
+        string? officeLocation,
+        int? MaritalStatusId,
         int? SectionId,
-        int? DepartmentId, 
+        int? DepartmentId,
         int? religionId,
         int? JobStatusId,
-        int PageNumber =1, 
+        int PageNumber =1,
         int PageSize =30,
         string sortDirection = "ASC"
         )
     {
-        if (PageNumber < 1) PageNumber = 1;
-        var employees = await _employeeInformation.GetEmployee(officeLocation, MaritalStatusId, SectionId, DepartmentId, religionId, JobStatusId, PageNumber, PageSize, sortDirection);
-        ViewBag.ReligionList = await _appDbContext.Religion.FromSqlRaw("EXEC sp_GetReligion").AsNoTracking().ToListAsync();
+        if (PageNumber <1) PageNumber =1;
+        var employees = await _employeeInformation.GetEmployee(
+            officeLocation,
+            MaritalStatusId,
+            SectionId,
+            DepartmentId,
+            religionId,
+            JobStatusId,
+            PageNumber,
+            PageSize,
+            sortDirection);
+        ViewBag.ReligionList = await _employeeInformation.Fill_Comb(12);
         ViewBag.SelectedReligionId = religionId;
-        ViewBag.MaritalStatusList = await _appDbContext.MaritalStatuses.FromSqlRaw("EXEC sp_GetMaritalStatus").AsNoTracking().ToListAsync();
+        ViewBag.MaritalStatusList = await _employeeInformation.Fill_Comb(10);
         ViewBag.MaritalStatusSelectedId = MaritalStatusId;
-        ViewBag.DepartmentList= await _appDbContext.Departments.FromSqlRaw("EXEC dbo.sp_GetDepartments").AsNoTracking().ToListAsync();
+        ViewBag.DepartmentList = await _employeeInformation.Fill_Comb(3);
         ViewBag.DepartmentId = DepartmentId;
-        ViewBag.SectionList = await _appDbContext.Sections.FromSqlRaw("EXEC dbo.sp_GetSection").AsNoTracking().ToListAsync();
+        ViewBag.SectionList = await _employeeInformation.Fill_Comb(13);
         ViewBag.SectionId = SectionId;
-        ViewBag.JobStatusList = await _appDbContext.JobStatus.FromSqlRaw("EXEC dbo.sp_GetJobStatus").AsNoTracking().ToListAsync();
+        ViewBag.JobStatusList = await _employeeInformation.Fill_Comb(8);
         ViewBag.JobStatusSelectedId = JobStatusId;
         if (employees == null)
         {
@@ -124,7 +135,6 @@ public class EmployeeController : Controller
         }
         return View(employees);
     }
-
 
     [HttpGet("{Id}")]
     public async Task<IActionResult> GetEmployee(int Id)
@@ -135,7 +145,7 @@ public class EmployeeController : Controller
 
         var NewVm = new EmployeeViewModel
         {
-            Id= employee.Id,
+            Id = employee.Id,
             OPRCode = employee.OPRCode,
             FatherName = employee.FatherName,
             FullName = employee.FullName,
@@ -150,20 +160,20 @@ public class EmployeeController : Controller
             CNIC = employee.CNIC,
             IsAsstHOD = employee.IsAsstHOD,
             IsHOD = employee.IsHOD,
-            SurNameList = await _appDbContext.SurName.FromSqlRaw("EXEC dbo.sp_GetSurName").AsNoTracking().ToListAsync(),
-            NationalityList = await _appDbContext.Nationality.FromSqlRaw("EXEC sp_GetNationality").AsNoTracking().ToListAsync(),
-            SectionList = await _appDbContext.Sections.FromSqlRaw("EXEC dbo.sp_GetSection").AsNoTracking().ToListAsync(),
-            DepartmentLevelList = await _appDbContext.DepartmentLevels.FromSqlRaw("Exec dbo.sp_GetDepartmentLevel").AsNoTracking().ToListAsync(),
-            LevelPolicyList = await _appDbContext.LevelPolicie.FromSqlRaw("EXEC dbo.sp_GetLevelPolicy").AsNoTracking().ToListAsync(),
-            ReligionList = await _appDbContext.Religion.FromSqlRaw("EXEC sp_GetReligion").AsNoTracking().ToListAsync(),
-            GenderList = await _appDbContext.Gender.FromSqlRaw("EXEC dbo.sp_GetGender").AsNoTracking().ToListAsync(),
-            MaritalStatusList = await _appDbContext.MaritalStatuses.FromSqlRaw("EXEC sp_GetMaritalStatus").AsNoTracking().ToListAsync(),
-            BloodGroupList = await _appDbContext.BloodGroup.FromSqlRaw("EXEC dbo.sp_GetBloodGroups").AsNoTracking().ToListAsync(),
-            DesignationsList = await _appDbContext.Designation.FromSqlRaw("Exec dbo.sp_GetDesignation").AsNoTracking().ToListAsync(),
-            DepartmentList = await _appDbContext.Departments.FromSqlRaw("EXEC dbo.sp_GetDepartments").AsNoTracking().ToListAsync(),
-            Grades = await _appDbContext.Grade.FromSqlRaw("EXEC dbo.sp_GetGrade").AsNoTracking().ToListAsync(),
-            EmploymentStatusList = await _appDbContext.EmployeeStatus.FromSqlRaw("EXEC dbo.sp_GetEmployeeStatus").AsNoTracking().ToListAsync(),
-            JobStatusList = await _appDbContext.JobStatus.FromSqlRaw("EXEC dbo.sp_GetJobStatus").AsNoTracking().ToListAsync()
+            SurNameList = await _employeeInformation.Fill_Comb(14),
+            NationalityList = await _employeeInformation.Fill_Comb(11),
+            SectionList = await _employeeInformation.Fill_Comb(13),
+            DepartmentLevelList = await _employeeInformation.Fill_Comb(2),
+            LevelPolicyList = await _employeeInformation.Fill_Comb(9),
+            ReligionList = await _employeeInformation.Fill_Comb(12),
+            GenderList = await _employeeInformation.Fill_Comb(6),
+            MaritalStatusList = await _employeeInformation.Fill_Comb(10),
+            BloodGroupList = await _employeeInformation.Fill_Comb(1),
+            DesignationsList = await _employeeInformation.Fill_Comb(4),
+            DepartmentList = await _employeeInformation.Fill_Comb(3),
+            Grades = await _employeeInformation.Fill_Comb(7),
+            EmploymentStatusList = await _employeeInformation.Fill_Comb(5),
+            JobStatusList = await _employeeInformation.Fill_Comb(8)
         };
         return View("CreateEmployee", NewVm);
     }

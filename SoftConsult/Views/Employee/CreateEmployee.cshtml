@@ -19,7 +19,7 @@
             <div class="col-4">
                 <select asp-for="SurnameId"
                         class="form-select erp-input"
-                        asp-items="@(new SelectList(Model.SurNameList, "Id", "Title"))">
+                        asp-items="@Model.SurNameList">
                        <option value="">Select</option>
                 </select>
                 <span asp-validation-for="SurnameId" class="text-danger"></span>
@@ -65,7 +65,7 @@
             <div class="col-4">
                 <select asp-for="NationalityId" 
                         class="form-select erp-input"
-                        asp-items="@(new SelectList(Model.NationalityList, "Id", "Name"))">
+                        asp-items="Model.NationalityList">
                     <option value="0">Select</option>
                 </select>
                 <span asp-validation-for="NationalityId" class="text-danger"></span>
@@ -97,7 +97,7 @@
                 <div class="col-4">
                     <select asp-for="SectionId"
                             class="form-select erp-input"
-                            asp-items="@(new SelectList(Model.SectionList, "Id","Name"))">
+                            asp-items="Model.SectionList">
                     <option value="0">Select</option>
                 </select>
                 <span asp-validation-for="SectionId" class="text-danger"></span>
@@ -107,7 +107,7 @@
             <div class="col-4">
                 <select asp-for="DepartmentId"
                         class="form-select erp-input"
-                        asp-items="@(new SelectList(Model.DepartmentList, "Id","Name"))">
+                        asp-items="Model.DepartmentList">
                     <option value="0">Select</option>
                 </select>
                 <span asp-validation-for="DepartmentId" class="text-danger"></span>
@@ -119,7 +119,7 @@
             <div class="col-4">
                 <select asp-for="DepartmentLevelId"
                         class="form-select erp-input"
-                        asp-items="@(new SelectList(Model.DepartmentLevelList, "Id", "LevelName"))">
+                        asp-items="Model.DepartmentLevelList">
                     <option value="0">Select</option>
                 </select>
                 <span asp-validation-for="DepartmentLevelId" class="text-danger"></span>
@@ -129,7 +129,7 @@
             <div class="col-4">
                 <select asp-for="LeavePolicyCodeId"
                         class="form-select erp-input"
-                        asp-items="@(new SelectList(Model.LevelPolicyList, "Id", "Level"))">
+                        asp-items="Model.LevelPolicyList">
                     <option value="0">Select</option>
                 </select>
                 <span asp-validation-for="LeavePolicyCodeId" class="text-danger"></span>
@@ -141,7 +141,7 @@
             <div class="col-4">
                 <select asp-for="GenderId"
                         class="form-select erp-input"
-                        asp-items="@(new SelectList(Model.GenderList,"Id","Name"))">
+                        asp-items="Model.GenderList">
                     <option value="0">Select</option>
                 </select>
                 <span asp-validation-for="GenderId" class="text-danger"></span>
@@ -151,7 +151,7 @@
             <div class="col-4">
                 <select asp-for="MaritalStatusId"
                         class="form-select erp-input"
-                        asp-items="@(new SelectList(Model.MaritalStatusList,"Id","Status"))">
+                        asp-items="Model.MaritalStatusList">
                     <option value="0">Select</option>
                 </select>
                 <span asp-validation-for="MaritalStatusId" class="text-danger"></span>
@@ -161,7 +161,7 @@
             <div class="col-4 mt-2">
                 <select asp-for="DesignationId"
                         class="form-select erp-input"
-                        asp-items="@(new SelectList(Model.DesignationsList, "Id", "DesignationName"))">
+                        asp-items="Model.DesignationsList">
                     <option value="0">Select</option>
                 </select>
                 <span asp-validation-for="DesignationId" class="text-danger"></span>
@@ -173,7 +173,7 @@
             <div class="col-4">
                 <select asp-for="BloodGroupId"
                         class="form-select erp-input"
-                        asp-items="@(new SelectList(Model.BloodGroupList, "Id","Group"))">
+                        asp-items="Model.BloodGroupList">
                     <option value="0">Select</option>
                 </select>
                 <span asp-validation-for="BloodGroupId" class="text-danger"></span>
@@ -183,7 +183,7 @@
             <div class="col-4">
                 <select asp-for="ReligionId"
                         class="form-select erp-input"
-                        asp-items="@(new SelectList(Model.ReligionList, "Id","Name"))">
+                        asp-items="Model.ReligionList">
                     <option value="">Select</option>
                 </select>
                 <span asp-validation-for="ReligionId" class="text-danger"></span>
@@ -216,7 +216,7 @@
         <div class="col-4">
             <select asp-for="GradeId"
                     class="form-select erp-input"
-                asp-items="@(new SelectList(Model.Grades, "Id","EGrade"))">
+                asp-items="Model.Grades">
                 <option value="">Select</option>
             </select>
             <span asp-validation-for="GradeId" class="text-danger"></span>
@@ -228,7 +228,7 @@
         <div class="col-4">
             <select asp-for="EmploymentStatusId"
                     class="form-select erp-input"
-                    asp-items="@(new SelectList(Model.EmploymentStatusList, "Id", "Status"))">
+                    asp-items="Model.EmploymentStatusList">
                 <option value="">Select</option>
             </select>
             <span asp-validation-for="EmploymentStatusId" class="text-danger"></span>
@@ -238,7 +238,7 @@
         <div class="col-4">
             <select asp-for="JobStatusId"
                     class="form-select erp-input"
-                    asp-items="@(new SelectList(Model.JobStatusList, "Id", "Status"))">
+                    asp-items="Model.JobStatusList">
                 <option value="">Select</option>
                 </select>
             <span asp-validation-for="JobStatusId" class="text-danger"></span>

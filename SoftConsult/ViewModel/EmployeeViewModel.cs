@@ -1,4 +1,5 @@
-﻿using SoftConsult.Models;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using SoftConsult.Models;
 using System.ComponentModel.DataAnnotations;
 namespace SoftConsult.ViewModel;
 public class EmployeeViewModel
@@ -75,18 +76,18 @@ public class EmployeeViewModel
     [Required(ErrorMessage = "Please Select Department Level")]
     [Range(1, int.MaxValue, ErrorMessage = "Please Select Department Level")]
     public int DepartmentLevelId { get; set; }
-    public List<Department> DepartmentList { get; set; }
-    public List<Designation> DesignationsList { get; set; }
-    public List<Nationality> NationalityList { get; set; }
-    public List<Section> SectionList { get; set; }
-    public List<SurName> SurNameList { get; set; }
-    public List<DepartmentLevel> DepartmentLevelList {  get; set; }
-    public List<LevelPolicy> LevelPolicyList { get; set; }
-    public List<Gender> GenderList { get; set; }
-    public List<MaritalStatus> MaritalStatusList { get; set; }
-    public List<BloodGroup> BloodGroupList { get; set; }
-    public  List<Religion> ReligionList { get; set; } 
-    public List<Grade> Grades { get; set; }
-    public List<EmployeeStatus> EmploymentStatusList { get; set; }
-    public List<JobStatus> JobStatusList { get; set; }
+    public List<SelectListItem> DepartmentList { get; set; }
+    public List<SelectListItem> DesignationsList { get; set; }
+    public List<SelectListItem> NationalityList { get; set; }
+    public List<SelectListItem> SectionList { get; set; }
+    public List<SelectListItem> SurNameList { get; set; }
+    public List<SelectListItem> DepartmentLevelList {  get; set; }
+    public List<SelectListItem> LevelPolicyList { get; set; }
+    public List<SelectListItem> GenderList { get; set; }
+    public List<SelectListItem> MaritalStatusList { get; set; }
+    public List<SelectListItem> BloodGroupList { get; set; }
+    public  List<SelectListItem> ReligionList { get; set; } 
+    public List<SelectListItem> Grades { get; set; }
+    public List<SelectListItem> EmploymentStatusList { get; set; }
+    public List<SelectListItem> JobStatusList { get; set; }
 }

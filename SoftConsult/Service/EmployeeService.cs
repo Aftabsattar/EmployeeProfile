@@ -1,4 +1,5 @@
-﻿using SoftConsult.IGenericRepository;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using SoftConsult.IGenericRepository;
 using SoftConsult.IService;
 using SoftConsult.Models;
 using SoftConsult.ViewModel;
@@ -8,14 +9,15 @@ namespace SoftConsult.Service;
 public class EmployeeService : IEmployeeService
 {
     private readonly IEmployeeRepository _employeeInformation;
+    
     public EmployeeService(IEmployeeRepository employeeInformation)
     {
         _employeeInformation = employeeInformation;
     }
 
-    public async Task<string> CreateEmployee(EmployeeViewModel employeeViewModel)
+    public async Task<bool> CreateEmployee(EmployeeViewModel employeeViewModel, string Create = "Create")
     {
-        if (employeeViewModel == null) return "Invalid employee data.";
+        if (employeeViewModel == null) return false;
 
         var employeeInformation = new Employee
         {
@@ -50,13 +52,19 @@ public class EmployeeService : IEmployeeService
             DepartmentLevelId = employeeViewModel.DepartmentLevelId
         };
         var result = await _employeeInformation.CreateEmployeeAsync(employeeInformation);
-        if (result) return "Employee created successfully.";
-        return "Failed to create employee.";
+        if (result == null) return false;
+        return true;
     }
 
-    public Task<Employee> GetById(int id)
+    public async Task<List<SelectListItem>> Fill_Comb(int a)
     {
-        return  _employeeInformation.GetById(id);
+        return await _employeeInformation.Fill_Comb(a);
+    }
+
+    public async Task<Employee?> GetById(int id, string GetById = "GetById")
+    {
+        var employee = await _employeeInformation.GetById(id,GetById);
+        return employee;
     }
 
     public Task<PagedViewModel> GetEmployee(
@@ -65,27 +73,27 @@ public class EmployeeService : IEmployeeService
         int? SectionId, 
         int? DepartmentId, 
         int? religionId, 
-        int? JobStatusId,
+        int? JobStatusId, 
         int PageNumber, 
-        int PageSize,   
-        string sortDirection = "ASC")
+        int PageSize, 
+        string sortDirection = "ASC", 
+        string Operation = "GetAll")
     {
-        var employees = _employeeInformation.GetEmployee(
+        return _employeeInformation.GetEmployee(
             officeLocation, 
             DepartmentId, 
             MaritalStatusId, 
             SectionId, 
-            religionId,
+            religionId, 
             JobStatusId, 
             PageNumber, 
             PageSize, 
-            sortDirection);
-        return employees;
+            sortDirection, Operation);
     }
 
-    public async Task<bool> UpdateEmployeeAsync(Employee model)
+    public async Task<bool> UpdateEmployeeAsync(Employee model, string Operation = "Update")
     {
-        var result = await _employeeInformation.UpdateEmployeeAsync(model);
+        var result = await _employeeInformation.UpdateEmployeeAsync(model, Operation);
         return result;
     }
 }

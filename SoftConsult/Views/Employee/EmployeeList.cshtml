@@ -6,25 +6,15 @@
       asp-action="EmployeeList"
       method="get"
       class="row g-2 mb-3">
+
     <div class="col-md-4">
         <div class="row align-items-center">
             <div class="col-4">
                 <label class="form-label mb-0">Religion:</label>
             </div>
             <div class="col-8">
-                <select name="religionId" class="form-select">
+                <select name="religionId" class="form-select" asp-items="ViewBag.ReligionList">
                     <option value="">All</option>
-
-                    @if (ViewBag.ReligionList != null)
-                    {
-                        foreach (var r in ViewBag.ReligionList)
-                        {
-                            <option value="@r.Id"
-                                    selected="@(ViewBag.SelectedReligionId == r.Id)">
-                                @r.Name
-                            </option>
-                        }
-                    }
                 </select>
             </div>
         </div>
@@ -36,18 +26,8 @@
                 <label class="form-label mb-0">Section:</label>
             </div>
             <div class="col-8">
-                <select name="SectionId" class="form-select">
+                <select name="SectionId" class="form-select" asp-items="ViewBag.SectionList">
                     <option value="">All</option>
-                    @if (ViewBag.SectionList != null)
-                    {
-                        foreach (var r in ViewBag.SectionList)
-                        {
-                            <option value="@r.Id"
-                                    selected="@(ViewBag.SectionId == r.Id)">
-                                @r.Name
-                            </option>
-                        }
-                    }
                 </select>
             </div>
         </div>
@@ -55,81 +35,40 @@
 
     <div class="col-md-4">
         <div class="row align-items-center">
-
             <div class="col-4">
                 <label class="form-label mb-0">Marital:</label>
             </div>
-
             <div class="col-8">
-                <select name="MaritalStatusSelectedId" class="form-select">
+                <select name="MaritalStatusSelectedId" class="form-select" asp-items="ViewBag.MaritalStatusList">
                     <option value="">All</option>
-
-                    @if (ViewBag.MaritalStatusList != null)
-                    {
-                        foreach (var r in ViewBag.MaritalStatusList)
-                        {
-                            <option value="@r.Id"
-                                    selected="@(ViewBag.MaritalStatusSelectedId == r.Id)">
-                                @r.Status
-                            </option>
-                        }
-                    }
                 </select>
             </div>
-
         </div>
     </div>
 
     <div class="col-md-4">
         <div class="row align-items-center">
-
             <div class="col-4">
                 <label class="form-label mb-0">Department:</label>
             </div>
-
             <div class="col-8">
-                <select name="BloodGroupSelectedId" class="form-select">
+                <select name="DepartmentSelectedId" class="form-select" asp-items="ViewBag.DepartmentList">
                     <option value="">All</option>
-
-                    @if (ViewBag.DepartmentList != null)
-                    {
-                        foreach (var r in ViewBag.DepartmentList)
-                        {
-                            <option value="@r.Id"
-                                    selected="@(ViewBag.DepartmentSelectedId == r.Id)">
-                                @r.Name
-                            </option>
-                        }
-                    }
                 </select>
             </div>
-
         </div>
     </div>
 
     <div class="col-md-4">
         <div class="row align-items-center">
-
             <div class="col-4">
-                <label class="form-label mb-0">jobStatus:</label>
+                <label class="form-label mb-0">Job Status:</label>
             </div>
-
             <div class="col-8">
-                <select name="BloodGroupSelectedId" class="form-select">
+                <select name="JobStatusSelectedId" class="form-select" asp-items="ViewBag.JobStatusList">
                     <option value="">All</option>
-                    @if (ViewBag.JobStatusList != null)
-                    {
-                        foreach (var r in ViewBag.JobStatusList)
-                        {
-                            <option value="@r.Id"
-                                    selected="@(ViewBag.JobStatusSelectedId== r.Id)">
-                                @r.Status
-                            </option>
-                        }
-                    }
                 </select>
             </div>
-
         </div>
     </div>
 
@@ -139,7 +78,8 @@
         </button>
     </div>
 </form>
-<div class ="text-end">
+
+<div class="text-end">
     <h4>Total Records: @Model.TotalRecords</h4>
     <p>Page @Model.PageNumber of @Model.TotalPages</p>
 
@@ -170,7 +110,7 @@
         </thead>
 
         <tbody>
-            @if (Model != null)
+            @if (Model != null && Model.Employees != null && Model.Employees.Any())
             {
                 foreach (var emp in Model.Employees)
                 {
